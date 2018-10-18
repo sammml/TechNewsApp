@@ -17,6 +17,9 @@ public class Technews {
     // url that the tech news
     private String mUrl;
 
+    // contributor on each tech news
+    private String mContributor;
+
     /**
      * Constructs a new {@link Technews} object.
      *
@@ -25,11 +28,12 @@ public class Technews {
      * @param date is the date the tech news that is being published
      * @param url is the website URL to find more details about the tech news
      */
-    public Technews(String publication, String headline, String date, String url) {
+    public Technews(String publication, String headline, String date, String url, String contributor) {
         mPublication = publication;
         mHeadline = headline;
         mDate = date;
         mUrl = url;
+        mContributor = contributor;
     }
 
     // return the publication place of the tech news
@@ -51,4 +55,8 @@ public class Technews {
     public String getUrl() {
         return mUrl;
     }
+
+    // return the contributor of the tech news
+    public String getContributor()  {return mContributor; }
+
 }

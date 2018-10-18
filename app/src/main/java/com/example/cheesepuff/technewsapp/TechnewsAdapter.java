@@ -25,6 +25,7 @@ public class TechnewsAdapter extends ArrayAdapter<Technews> {
         TextView publication;
         TextView headline;
         TextView date;
+        TextView contributor;
     }
 
     /**
@@ -64,6 +65,9 @@ public class TechnewsAdapter extends ArrayAdapter<Technews> {
 
         holder.date = listItemView.findViewById(R.id.date);
         holder.date.setText(currentTechnews.getDate());
+
+        holder.contributor = listItemView.findViewById(R.id.contributor);
+        holder.contributor.setText(currentTechnews.getContributor());
 
 
         // return the list data

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity
 
     /** URL for earthquake data from the guardian dataset */
     private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?q=tech&api-key=test";
+            "https://content.guardianapis.com/search?order-by=newest&use-date=published&show-tags=contributor&q=tech&api-key=test";
 
     /**
      * Constant value for the tech news loader ID. We can choose any integer.

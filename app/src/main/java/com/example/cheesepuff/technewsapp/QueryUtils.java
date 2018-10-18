@@ -27,10 +27,15 @@ public final class QueryUtils {
     /** Tag for the log messages */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
-    // declare constance variables
-    private static final String publication = "sectionName";
-    private static final String headline = "webTitle";
-    private static final String date = "webPublicationDate";
+    // Delcare constances
+    private static final int READ_TIMEOUT = 10000;
+    private static final int CONNECT_TIMEOUT = 15000;
+    private static final int RESPONSE_CODE = 200;
+    private static final String PUBLICATION = "sectionName";
+    private static final String HEADLINE = "webTitle";
+    private static final String DATE = "webPublicationDate";
+    private static final String URL = "webUrl";
+    private static final String CONTRIBUTOR = "tags";
 
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
@@ -93,14 +98,14 @@ public final class QueryUtils {
         // try method to setup http connection, read timeout 10 - 15 sec, then get http method
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(READ_TIMEOUT/* milliseconds */);
+            urlConnection.setConnectTimeout(CONNECT_TIMEOUT /* milliseconds */);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == RESPONSE_CODE) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -174,18 +179,27 @@ public final class QueryUtils {
                 // For a given tech news, extract the JSONObject associated with the
                 // key called "sectionName", which represents a list of all publication places
                 // for that tech news.
-                String  publication = currentTechnews.getString("sectionName");
-                String headline = currentTechnews.getString("webTitle");
+                String  publication = currentTechnews.getString(PUBLICATION);
+                String headline = currentTechnews.getString(HEADLINE);
 
                 // Extract the value for the key called "time"
-                String date = formatDate(currentTechnews.getString("webPublicationDate"));
+                String date = formatDate(currentTechnews.getString(DATE));
 
                 // Extract the value for the key called "url"
-                String url = currentTechnews.getString("webUrl");
+                String url = currentTechnews.getString(URL);
+
+                String contributor ="";
+                //check for array object "reference" has value
+                if (currentTechnews.getJSONArray(CONTRIBUTOR).length()>0) {
+                    contributor = currentTechnews
+                            .getJSONArray(CONTRIBUTOR)
+                            .getJSONObject(0)
+                            .getString(HEADLINE);
+                }
 
                 // Create a new {@link Technews} object with the publication, location, time,
                 // and url from the JSON response.
-                Technews technews = new Technews(publication, headline, date, url);
+                Technews technews = new Technews(publication, headline, date, url, contributor);
 
                 // Add the new {@link Technews} to the list of tech news.
                 technewss.add(technews);
